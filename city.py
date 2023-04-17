@@ -66,7 +66,8 @@ class City():
         """
         coord1 = self.coordinates
         coord2 = other_city.coordinates
-        return round(geopy.distance.geodesic(coord1, coord2).km)
+        great_circle_dist = geopy.distance.great_circle(coord1, coord2).km # get great circle distance
+        return math.ceil(great_circle_dist)  # rounds up the distance
 
 
     def __str__(self) -> str:
@@ -118,6 +119,7 @@ def create_example_cities() -> None:
     """
     City("Melbourne", (-37.8136, 144.9631), "admin", 4529500, 1036533631)
     City("Canberra", (-35.2931, 149.1269), "primary", 381488, 1036142029)
+    City('Brisbane', (-27.4698, 153.0251), 'primary', 2000000, 3) # test case
     City("Sydney", (-33.865, 151.2094), "admin", 4840600, 1036074917)
     City("Kuala Lumpur", (3.1478, 101.6953), "primary", 8639000, 1458988644)
     # an example of two cities with the same name
