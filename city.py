@@ -15,11 +15,9 @@ class City():
     """
     Represents a city.
     """
-
+    # class variables
     id_to_cities = dict()
-
     name_to_cities = dict()
-
     table_headers = ["Name", "Coordinates", "City type", "Population", "City ID"]
 
     def __init__(self, name: str, coordinates: Tuple[float, float], city_type: str,
@@ -35,13 +33,9 @@ class City():
         :return: None
         """
         self.name = name
-
         self.coordinates = coordinates
-
         self.city_type = city_type
-
         self.population = population
-
         self.city_id = city_id
 
         # associates an id to an instance of City
@@ -64,11 +58,10 @@ class City():
         :param other_city: a city to measure the distance to
         :return: the rounded-up distance in kilometers
         """
-        coord1 = self.coordinates
-        coord2 = other_city.coordinates
-        great_circle_dist = geopy.distance.great_circle(coord1, coord2).km # get great circle distance
+        coord1 = self.coordinates  # get coordinates of this instance (self)
+        coord2 = other_city.coordinates  # get coordinates of the other country passed in this instance's method
+        great_circle_dist = geopy.distance.great_circle(coord1, coord2).km  # get great circle distance
         return math.ceil(great_circle_dist)  # rounds up the distance
-
 
     def __str__(self) -> str:
         """
@@ -99,7 +92,7 @@ def get_city_by_id(city_id: int) -> City | None:
     :param city_id: the ID of the city.
     :return: the city with that ID if one is known, None otherwise.
     """
-    return City.id_to_cities[city_id]
+    return City.id_to_cities[city_id]  # based on key city_id, get value city object from keyid_to_cities dictionary
 
 
 def get_cities_by_name(city_name: str) -> list[City]:
@@ -110,7 +103,7 @@ def get_cities_by_name(city_name: str) -> list[City]:
     :param city_name: the name of the city.
     :return: the list of cities known by this name.
     """
-    return City.name_to_cities[city_name]
+    return City.name_to_cities[city_name]  # based on key city_name, get value city object(s) from name_to_cities dictionary
 
 
 def create_example_cities() -> None:
@@ -119,7 +112,6 @@ def create_example_cities() -> None:
     """
     City("Melbourne", (-37.8136, 144.9631), "admin", 4529500, 1036533631)
     City("Canberra", (-35.2931, 149.1269), "primary", 381488, 1036142029)
-    City('Brisbane', (-27.4698, 153.0251), 'primary', 2000000, 3) # test case
     City("Sydney", (-33.865, 151.2094), "admin", 4840600, 1036074917)
     City("Kuala Lumpur", (3.1478, 101.6953), "primary", 8639000, 1458988644)
     # an example of two cities with the same name
