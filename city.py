@@ -5,10 +5,11 @@ It contains the class City.
 
 @file city.py
 """
-from __future__ import annotations #https://peps.python.org/pep-0563/
+from __future__ import annotations  # https://peps.python.org/pep-0563/
 from typing import Tuple
 import math
 import geopy.distance
+
 
 # hello! this is from yixin
 
@@ -17,7 +18,7 @@ class City():
     Represents a city.
     """
 
-    #associates an id to an instance of City
+    # associates an id to an instance of City
     id_to_cities = dict()
 
     # associates city names to a list of instances of City.
@@ -26,8 +27,8 @@ class City():
 
     table_headers = ["Name", "Coordinates", "City type", "Population", "City ID"]
 
-    def __init__(self, name: str, coordinates: Tuple[float, float], city_type: str,\
-                  population: int, city_id: int) -> None:
+    def __init__(self, name: str, coordinates: Tuple[float, float], city_type: str, \
+                 population: int, city_id: int) -> None:
         """
         Initialises a city with the given data.
 
@@ -48,7 +49,17 @@ class City():
 
         self.city_id = city_id
 
-        #TODO
+        # id: <obj_city>
+        City.id_to_cities[self.city_id] = self
+
+        # {melbourne: [melb1, melb2],
+        #  kl: p[kl1, kl2]}
+        # City.name_to_cities{self.name}
+        if self.name in City.name_to_cities:
+            City.name_to_cities[self.name].append(self)
+        else:
+            City.name_to_cities[self.name] = [self] # create new key
+        # TODO
 
     def distance(self, other_city: City) -> int:
         """
@@ -58,7 +69,7 @@ class City():
         :param other_city: a city to measure the distance to
         :return: the rounded-up distance in kilometers
         """
-        #TODO
+        # TODO
 
     def __str__(self) -> str:
         """
@@ -67,7 +78,7 @@ class City():
 
         :return: a string representing the city.
         """
-        #TODO
+        # TODO
 
     def get_table_data(self) -> list[str]:
         """
@@ -79,7 +90,7 @@ class City():
 
         :return: A list of data about the city.
         """
-        #TODO
+        # TODO
 
 
 def get_city_by_id(city_id: int) -> City | None:
@@ -89,7 +100,7 @@ def get_city_by_id(city_id: int) -> City | None:
     :param city_id: the ID of the city.
     :return: the city with that ID if one is known, None otherwise.
     """
-    #TODO
+    # TODO
 
 
 def get_cities_by_name(city_name: str) -> list[City]:
@@ -100,8 +111,7 @@ def get_cities_by_name(city_name: str) -> list[City]:
     :param city_name: the name of the city.
     :return: the list of cities known by this name. 
     """
-    #TODO
-
+    # TODO
 
 
 def create_example_cities() -> None:
@@ -112,10 +122,10 @@ def create_example_cities() -> None:
     City("Canberra", (-35.2931, 149.1269), "primary", 381488, 1036142029)
     City("Sydney", (-33.865, 151.2094), "admin", 4840600, 1036074917)
     City("Kuala Lumpur", (3.1478, 101.6953), "primary", 8639000, 1458988644)
-    #an example of two cities with the same name
+    # an example of two cities with the same name
     City("Santiago", (-33.45, -70.6667), "primary", 7026000, 1152554349)
-    City("Santiago",	(19.45, -70.7), "admin", 1343423, 1214985348)
-    #an example of a city without a specific city type
+    City("Santiago", (19.45, -70.7), "admin", 1343423, 1214985348)
+    # an example of a city without a specific city type
     City("Baoding", (38.8671, 115.4845), "", 11860000, 1156256829)
 
 
@@ -132,5 +142,8 @@ def test_example_cities() -> None:
 
 
 if __name__ == "__main__":
-    create_example_cities()
-    test_example_cities()
+    # create_example_cities()
+    # test_example_cities()
+    City('Melb', (1.2, 1.3), 'Admin', 100, 789)
+    City('Kl', (3.2, 3.3), 'Admin', 100, 875)
+    print(City.id_to_cities)
