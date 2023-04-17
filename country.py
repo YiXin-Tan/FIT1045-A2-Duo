@@ -6,14 +6,14 @@ It contains the class Country.
 @file country.py
 """
 from tabulate import tabulate
-from city import City, create_example_cities
+from city import City, create_example_cities, get_cities_by_name
 
 class Country():
     """
     Represents a country.
     """
-
-    name_to_countries = dict() # a dict that associates country names to instances.
+    # {country_name: country_obj}
+    name_to_countries = dict()  # a dict that associates country names to instances.
 
     def __init__(self, name: str, iso3: str) -> None:
         """
@@ -25,7 +25,8 @@ class Country():
         """
         self.name = name
         self.iso3 = iso3
-        #TODO
+        self.cities = []  # [city_obj]
+        Country.name_to_countries[self.name] = self  # populate this country instance into class variable name_to_countries
 
     def add_city(self, city: City) -> None:
         """
@@ -34,7 +35,7 @@ class Country():
         :param city: The city to add to this country
         :return: None
         """
-        #TODO
+        self.cities.append(city)  # populate this country's cities list with this city
 
     def get_cities(self, city_type: list[str] = None) -> list[City]:
         """
@@ -48,7 +49,14 @@ class Country():
         :param city_type: None, or a list of strings, each of which describes the type of city.
         :return: a list of cities in this country that have the specified city types.
         """
-        #TODO
+        filtered_cities = []
+        for check_city_type in city_type:  # for each filter criteria
+            for city in self.cities:  # for each city in the specified country
+                # check whether the city_type matches the filter criteria
+                if city.city_type == check_city_type:
+                    filtered_cities.append(city)
+        return filtered_cities
+
 
     def print_cities(self) -> None:
         """
@@ -57,13 +65,16 @@ class Country():
         "Order", "Name", "Coordinates", "City type", "Population", "City ID".
         Order should start at 0 for the most populous city, and increase by 1 for each city.
         """
-        #TODO
+        # test code
+        # print(self.cities)
+        # for city in self.cities:
+        #     print(city.name)
 
     def __str__(self) -> str:
         """
         Returns the name of the country.
         """
-        #TODO
+        return self.name
 
 
 def add_city_to_country(city: City, country_name: str, country_iso3: str) -> None:
@@ -75,7 +86,15 @@ def add_city_to_country(city: City, country_name: str, country_iso3: str) -> Non
     :param country_iso3: The unique 3-letter identifier of this country
     :return: None
     """
-    #TODO
+    if country_name in Country.name_to_countries:
+        # country exists in class variable name_to_countries
+        existing_country = Country.name_to_countries[country_name] # get existing country instance
+        existing_country.add_city(city)
+    else:
+        # country doesn't exist yet
+        new_country = Country(country_name, country_iso3)
+        new_country.add_city(city)
+
 
 def find_country_of_city(city: City) -> Country:
     """
@@ -85,7 +104,9 @@ def find_country_of_city(city: City) -> Country:
     :param city: The city.
     :return: The country where the city is.
     """
-    #TODO
+    for country_name, country_obj in Country.name_to_countries.items():
+        if city in country_obj.cities:
+            return country_obj
 
 def create_example_countries() -> None:
     """
@@ -94,7 +115,7 @@ def create_example_countries() -> None:
     """
     create_example_cities()
     malaysia = Country("Malaysia", "MAS")
-    kuala_lumpur = City.name_to_cities["Kuala Lumpur"][0]
+    kuala_lumpur = City.name_to_cities["Kuala Lumpur"][0]  # city object
     malaysia.add_city(kuala_lumpur)
 
     for city_name in ["Melbourne", "Canberra", "Sydney"]:
@@ -110,3 +131,16 @@ def test_example_countries() -> None:
 if __name__ == "__main__":
     create_example_countries()
     test_example_countries()
+    # print(City.name_to_cities["Melbourne"][0])
+    # find_country_of_city(City.name_to_cities["Melbourne"])
+    au = Country('Australia', 'AUS')
+    nz = Country('New Zealand', 'NZL')
+    mel = City("Melbourne", (-37.8136, 144.9631), "admin", 4529500, 1036533631)
+    auck = City('Auckland', (1,3), 'admin', 30, 3)
+    # add_city_to_country(mel, 'Australia', 'AUS')
+    add_city_to_country(auck, 'New Zealand', 'NZ')
+    print(nz.cities)
+    # print(au.cities)
+    # print(nz.cities)
+    print(find_country_of_city(auck))
+
