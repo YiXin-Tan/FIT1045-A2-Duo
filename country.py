@@ -25,7 +25,7 @@ class Country():
         """
         self.name = name
         self.iso3 = iso3
-        self.cities = []  # [city_obj]
+        self.cities = []  # [city_obj] TODO: self.cities => None?
         Country.name_to_countries[self.name] = self  # populate this country instance into class variable name_to_countries
 
     def add_city(self, city: City) -> None:
