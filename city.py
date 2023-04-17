@@ -11,23 +11,18 @@ import math
 import geopy.distance
 
 
-# hello! this is from yixin
-
 class City():
     """
     Represents a city.
     """
 
-    # associates an id to an instance of City
     id_to_cities = dict()
 
-    # associates city names to a list of instances of City.
-    # We use a list because there may be multiple cities with the same name.
     name_to_cities = dict()
 
     table_headers = ["Name", "Coordinates", "City type", "Population", "City ID"]
 
-    def __init__(self, name: str, coordinates: Tuple[float, float], city_type: str, \
+    def __init__(self, name: str, coordinates: Tuple[float, float], city_type: str,
                  population: int, city_id: int) -> None:
         """
         Initialises a city with the given data.
@@ -49,17 +44,17 @@ class City():
 
         self.city_id = city_id
 
-        # id: <obj_city>
+        # associates an id to an instance of City
+        # {id: <obj_city>}
         City.id_to_cities[self.city_id] = self
 
-        # {melbourne: [melb1, melb2],
-        #  kl: p[kl1, kl2]}
-        # City.name_to_cities{self.name}
+        # associates city names to a list of instances of City.
+        # We use a list because there may be multiple cities with the same name.
+        # {city_name: [<city1_id>, <city2_di>]}
         if self.name in City.name_to_cities:
             City.name_to_cities[self.name].append(self)
         else:
-            City.name_to_cities[self.name] = [self] # create new key
-        # TODO
+            City.name_to_cities[self.name] = [self]  # create new key/value pair
 
     def distance(self, other_city: City) -> int:
         """
@@ -69,7 +64,10 @@ class City():
         :param other_city: a city to measure the distance to
         :return: the rounded-up distance in kilometers
         """
-        # TODO
+        coord1 = self.coordinates
+        coord2 = other_city.coordinates
+        return round(geopy.distance.geodesic(coord1, coord2).km)
+
 
     def __str__(self) -> str:
         """
@@ -78,7 +76,7 @@ class City():
 
         :return: a string representing the city.
         """
-        # TODO
+        return f'{self.name} ({self.city_id})'
 
     def get_table_data(self) -> list[str]:
         """
@@ -90,7 +88,7 @@ class City():
 
         :return: A list of data about the city.
         """
-        # TODO
+        return [self.name, str(self.coordinates), str(self.city_type), str(self.population), str(self.city_id)]
 
 
 def get_city_by_id(city_id: int) -> City | None:
@@ -100,18 +98,18 @@ def get_city_by_id(city_id: int) -> City | None:
     :param city_id: the ID of the city.
     :return: the city with that ID if one is known, None otherwise.
     """
-    # TODO
+    return City.id_to_cities[city_id]
 
 
 def get_cities_by_name(city_name: str) -> list[City]:
     """
-    Given the name, returns the list of cities known by this name. 
+    Given the name, returns the list of cities known by this name.
     If no city is known, returns an empty list.
 
     :param city_name: the name of the city.
-    :return: the list of cities known by this name. 
+    :return: the list of cities known by this name.
     """
-    # TODO
+    return City.name_to_cities[city_name]
 
 
 def create_example_cities() -> None:
@@ -136,14 +134,12 @@ def test_example_cities() -> None:
     melbourne = get_city_by_id(1036533631)
     sydney = get_cities_by_name("Sydney")[0]
     print(melbourne)
+    print(melbourne.name)
     print(f"Melbourne's name is {melbourne.name}")
     print(f"Melbourne's population is {melbourne.population}")
     print(f"The distance between Melbourne and Sydney is {melbourne.distance(sydney)} km")
 
 
 if __name__ == "__main__":
-    # create_example_cities()
-    # test_example_cities()
-    City('Melb', (1.2, 1.3), 'Admin', 100, 789)
-    City('Kl', (3.2, 3.3), 'Admin', 100, 875)
-    print(City.id_to_cities)
+    create_example_cities()
+    test_example_cities()
