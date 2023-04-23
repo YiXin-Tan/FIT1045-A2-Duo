@@ -25,7 +25,9 @@ class Country():
         """
         self.name = name
         self.iso3 = iso3
-        #TODO
+        self.cities = []
+        
+        Country.name_to_countries[self.name] = self
 
     def add_city(self, city: City) -> None:
         """
@@ -34,7 +36,8 @@ class Country():
         :param city: The city to add to this country
         :return: None
         """
-        #TODO
+        self.cities.append(city)
+        
 
     def get_cities(self, city_type: list[str] = None) -> list[City]:
         """
@@ -48,7 +51,15 @@ class Country():
         :param city_type: None, or a list of strings, each of which describes the type of city.
         :return: a list of cities in this country that have the specified city types.
         """
-        #TODO
+        if city_type is None:
+            return self.cities
+        else:
+            filtered_cities = []
+            for city in self.cities:
+                if city.city_type in city_type:
+                    filtered_cities.append(city)
+            return filtered_cities 
+
 
     def print_cities(self) -> None:
         """
@@ -63,7 +74,7 @@ class Country():
         """
         Returns the name of the country.
         """
-        #TODO
+        return f"{self.name}"
 
 
 def add_city_to_country(city: City, country_name: str, country_iso3: str) -> None:
@@ -75,7 +86,12 @@ def add_city_to_country(city: City, country_name: str, country_iso3: str) -> Non
     :param country_iso3: The unique 3-letter identifier of this country
     :return: None
     """
-    #TODO
+    if country_name not in Country.name_to_countries:
+        country = Country(country_name, country_iso3)
+    else:
+        country = Country.name_to_countries[country_name]
+    
+    country.add_city(city)
 
 def find_country_of_city(city: City) -> Country:
     """
@@ -85,7 +101,10 @@ def find_country_of_city(city: City) -> Country:
     :param city: The city.
     :return: The country where the city is.
     """
-    #TODO
+    for country in Country.name_to_countries.values():
+        if city in country.cities:
+            return country
+    return none
 
 def create_example_countries() -> None:
     """
