@@ -25,7 +25,7 @@ class Country():
         """
         self.name = name
         self.iso3 = iso3
-        self.cities = []  # [city_obj] TODO: self.cities => None?
+        self.cities = []  # [city_obj] TODO: self.cities => None? ensure that it is populated with the cities added to the country.
         Country.name_to_countries[self.name] = self  # populate this country instance into class variable name_to_countries
 
     def add_city(self, city: City) -> None:
@@ -50,11 +50,15 @@ class Country():
         :return: a list of cities in this country that have the specified city types.
         """
         filtered_cities = []
-        for check_city_type in city_type:  # for each filter criteria
-            for city in self.cities:  # for each city in the specified country
-                # check whether the city_type matches the filter criteria
-                if city.city_type == check_city_type:
-                    filtered_cities.append(city)
+        if city_type:
+            for check_city_type in city_type:  # for each filter criteria
+                for city in self.cities:  # for each city in the specified country
+                    # check whether the city_type matches the filter criteria
+                    if city.city_type == check_city_type:
+                        filtered_cities.append(city)
+        else:
+            for city in self.cities:
+                filtered_cities.append(city)
         return filtered_cities
 
 
@@ -66,9 +70,9 @@ class Country():
         Order should start at 0 for the most populous city, and increase by 1 for each city.
         """
         # test code
-        # print(self.cities)
-        # for city in self.cities:
-        #     print(city.name)
+        print(self.cities)
+        for city in self.cities:
+            print(city.name)
 
     def __str__(self) -> str:
         """
@@ -90,6 +94,7 @@ def add_city_to_country(city: City, country_name: str, country_iso3: str) -> Non
         # country exists in class variable name_to_countries
         existing_country = Country.name_to_countries[country_name] # get existing country instance
         existing_country.add_city(city)
+        # print(existing_country.cities)
     else:
         # country doesn't exist yet
         new_country = Country(country_name, country_iso3)
@@ -117,6 +122,7 @@ def create_example_countries() -> None:
     malaysia = Country("Malaysia", "MAS")
     kuala_lumpur = City.name_to_cities["Kuala Lumpur"][0]  # city object
     malaysia.add_city(kuala_lumpur)
+    malaysia.print_cities()
 
     for city_name in ["Melbourne", "Canberra", "Sydney"]:
         add_city_to_country(City.name_to_cities[city_name][0], "Australia", "AUS")
@@ -129,18 +135,21 @@ def test_example_countries() -> None:
 
 
 if __name__ == "__main__":
-    create_example_countries()
-    test_example_countries()
-    # print(City.name_to_cities["Melbourne"][0])
-    # find_country_of_city(City.name_to_cities["Melbourne"])
+    # create_example_countries()
+    # test_example_countries()
+
+    # # print(City.name_to_cities["Melbourne"][0])
+    # # find_country_of_city(City.name_to_cities["Melbourne"])
     au = Country('Australia', 'AUS')
     nz = Country('New Zealand', 'NZL')
     mel = City("Melbourne", (-37.8136, 144.9631), "admin", 4529500, 1036533631)
     auck = City('Auckland', (1,3), 'admin', 30, 3)
-    # add_city_to_country(mel, 'Australia', 'AUS')
+    add_city_to_country(mel, 'Australia', 'AUS')
     add_city_to_country(auck, 'New Zealand', 'NZ')
-    print(nz.cities)
-    # print(au.cities)
-    # print(nz.cities)
-    print(find_country_of_city(auck))
+
+    au.print_cities()
+    nz.print_cities()
+    # # print(au.cities)
+    # # print(nz.cities)
+    # print(find_country_of_city(auck))
 
