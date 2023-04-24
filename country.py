@@ -5,7 +5,7 @@ It contains the class Country.
 
 @file country.py
 """
-from tabulate import tabulate, SEPARATING_LINE
+from tabulate import tabulate
 from city import City, create_example_cities, get_cities_by_name
 
 
@@ -26,7 +26,7 @@ class Country():
         """
         self.name = name
         self.iso3 = iso3
-        self.cities = []  # [city_obj] TODO: self.cities => None? ensure that it is populated with the cities added to the country.
+        self.cities = []  # [city_obj]
         Country.name_to_countries[
             self.name] = self  # populate this country instance into class variable name_to_countries
 
@@ -106,7 +106,6 @@ def add_city_to_country(city: City, country_name: str, country_iso3: str) -> Non
         # country exists in class variable name_to_countries
         existing_country = Country.name_to_countries[country_name]  # get existing country instance
         existing_country.add_city(city)
-        # print(existing_country.cities)
     else:
         # country doesn't exist yet
         new_country = Country(country_name, country_iso3)
@@ -135,7 +134,6 @@ def create_example_countries() -> None:
     malaysia = Country("Malaysia", "MAS")
     kuala_lumpur = City.name_to_cities["Kuala Lumpur"][0]  # city object
     malaysia.add_city(kuala_lumpur)
-    # malaysia.print_cities()
 
     for city_name in ["Melbourne", "Canberra", "Sydney"]:
         add_city_to_country(City.name_to_cities[city_name][0], "Australia", "AUS")
@@ -151,18 +149,3 @@ def test_example_countries() -> None:
 if __name__ == "__main__":
     create_example_countries()
     test_example_countries()
-
-    # # print(City.name_to_cities["Melbourne"][0])
-    # # find_country_of_city(City.name_to_cities["Melbourne"])
-    # au = Country('Australia', 'AUS')
-    # nz = Country('New Zealand', 'NZL')
-    # mel = City("Melbourne", (-37.8136, 144.9631), "admin", 4529500, 1036533631)
-    # auck = City('Auckland', (1,3), 'admin', 30, 3)
-    # add_city_to_country(mel, 'Australia', 'AUS')
-    # add_city_to_country(auck, 'New Zealand', 'NZ')
-    #
-    # au.print_cities()
-    # nz.print_cities()
-    # # # print(au.cities)
-    # # # print(nz.cities)
-    # # print(find_country_of_city(auck))
