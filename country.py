@@ -70,27 +70,21 @@ class Country():
         "Order", "Name", "Coordinates", "City type", "Population", "City ID".
         Order should start at 0 for the most populous city, and increase by 1 for each city.
         """
-        # test code
-        # table_headers = ["Name", "Coordinates", "City type", "Population", "City ID"]
-
-        # table_headers2 = ["Order", "Name", "Coordinates", "City type", "Population", "City ID"]
+        # table_headers = ["Order", "Name", "Coordinates", "City type", "Population", "City ID"]
         table_headers = City.table_headers[:]
         table_headers.insert(0, "Order")
-        cities = [city.get_table_data() for city in self.cities]
 
+        cities = [city.get_table_data() for city in self.cities] # populate cities list with each cities data
+
+        print(cities)
         cities.sort(key=lambda x: int(x[3]), reverse=True)
 
         for i in range(len(cities)):
-            cities[i].insert(0, i)  # inserts order number at start of each list
-        cities.insert(0, table_headers)
-
-        # cities.append(SEPARATING_LINE)
+            cities[i].insert(0, i)  # inserts order number at start of each nested list
+        cities.insert(0, table_headers)  # insert table header at start of parent list
 
         print(f'Cities of {self.name}')
-        print(tabulate(tabular_data=cities,
-                       # headers=table_headers,
-                       # tablefmt='simple',
-                       numalign='left'))
+        print(tabulate(tabular_data=cities, numalign='left'))
 
     def __str__(self) -> str:
         """
