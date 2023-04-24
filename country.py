@@ -8,17 +8,17 @@ It contains the class Country.
 from tabulate import tabulate
 from city import City, create_example_cities
 
+
 class Country():
     """
     Represents a country.
     """
-
-    name_to_countries = dict() # a dict that associates country names to instances.
+    name_to_countries = dict()  # a dict that associates country names to instances.
 
     def __init__(self, name: str, iso3: str) -> None:
         """
         Creates an instance with a country name and a country ISO code with 3 characters.
-
+        #TODO: rename docstring parameters?
         :param country_name: The name of the country
         :param country_iso3: The unique 3-letter identifier of this country
 	    :return: None
@@ -50,14 +50,14 @@ class Country():
         :param city_type: None, or a list of strings, each of which describes the type of city.
         :return: a list of cities in this country that have the specified city types.
         """
-        if city_type is None:
-            return self.cities
-        else:
+        if city_type:
             filtered_cities = []
             for city in self.cities:  # for each city in the specified country
                 if city.city_type in city_type:  # check whether the city_type matches the filter criteria
                     filtered_cities.append(city)
             return filtered_cities
+        else:
+            return self.cities
 
     def print_cities(self) -> None:
         """
@@ -66,17 +66,14 @@ class Country():
         "Order", "Name", "Coordinates", "City type", "Population", "City ID".
         Order should start at 0 for the most populous city, and increase by 1 for each city.
         """
-        # table_headers = ["Order", "Name", "Coordinates", "City type", "Population", "City ID"]
-        table_headers = City.table_headers[:]
-        table_headers.insert(0, "Order")
+        table_headers = City.table_headers[:]  # clone from City class variable
+        table_headers.insert(0, "Order")  # ["Order", "Name", "Coordinates", "City type", "Population", "City ID"]
 
-        cities = [city.get_table_data() for city in self.cities] # populate cities list with each cities data
-
-        print(cities)
-        cities.sort(key=lambda x: int(x[3]), reverse=True)
+        cities = [city.get_table_data() for city in self.cities]  # populate cities list with each city's data
+        cities.sort(key=lambda city_list: int(city_list[3]), reverse=True)  # sorts population (in nested list) by descending order
 
         for i in range(len(cities)):
-            cities[i].insert(0, i)  # inserts order number at start of each nested list
+            cities[i].insert(0, i)  # insert order number at start of each nested list
         cities.insert(0, table_headers)  # insert table header at start of parent list
 
         print(f'Cities of {self.name}')
@@ -94,6 +91,7 @@ def add_city_to_country(city: City, country_name: str, country_iso3: str) -> Non
     Adds a City to a country.
     If the country does not exist, create it.
 
+    :param city: The city to be added to this country
     :param country_name: The name of the country
     :param country_iso3: The unique 3-letter identifier of this country
     :return: None
@@ -107,6 +105,7 @@ def add_city_to_country(city: City, country_name: str, country_iso3: str) -> Non
 
     country.add_city(city)
 
+
 def find_country_of_city(city: City) -> Country:
     """
     Returns the Country this city belongs to.
@@ -118,6 +117,7 @@ def find_country_of_city(city: City) -> Country:
     for country in Country.name_to_countries.values():
         if city in country.cities:
             return country
+
 
 def create_example_countries() -> None:
     """
