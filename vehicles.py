@@ -178,7 +178,7 @@ class TeleportingTarteTrolley(Vehicle):
         """
         distance = departure.distance(arrival)
         if distance < self.max_distance:
-            return self.travel_time
+            return math.ceil(self.travel_time)
         return math.inf
 
     def __str__(self) -> str:
