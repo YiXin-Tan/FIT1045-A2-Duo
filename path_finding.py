@@ -15,7 +15,7 @@ from vehicles import Vehicle, create_example_vehicles, CrappyCrepeCar, Diplomacy
 from csv_parsing import create_cities_countries_from_csv
 import country
 
-def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itinerary | None:
+def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itinerary:  # Itinerary | None
     """
     Returns a shortest path between two cities for a given vehicle as an Itinerary,
     or None if there is no path.
@@ -59,29 +59,33 @@ def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itin
         # networkx.draw(g, with_labels=True)
         # # print(networkx.shortest_path(g, source=from_city.city_id, target=to_city.city_id))
         # plt.show()
-        #
-        #
-        path_sequence_ids = networkx.shortest_path(g, source=from_city.city_id, target=to_city.city_id)
-        path_sequence_obj = [get_city_by_id(city_id) for city_id in path_sequence_ids]
 
+        try:
+            path_sequence_ids = networkx.shortest_path(g, source=from_city.city_id, target=to_city.city_id)
+            path_sequence_obj = [get_city_by_id(city_id) for city_id in path_sequence_ids]
+        except networkx.exception.NetworkXNoPath:
+            return
+        else:
+            return Itinerary(path_sequence_obj)
         # for city_id in path_sequence_ids:
         #     path_sequence.append(get_city_by_id(city_id))
         #
-        if path_sequence_obj:
-            return Itinerary(path_sequence_obj)
-        return None
+
+        # if path_sequence_obj:
+        #     return Itinerary(path_sequence_obj)
+        # return None
 
 
 if __name__ == "__main__":
     create_cities_countries_from_csv("worldcities_truncated.csv")
 
-    # from_cities = set()
-    # for city_id in [1036533631, 1036142029, 1458988644]:
-    #     from_cities.add(get_city_by_id(city_id))
-    #
-    # #we create some vehicles
-    # vehicles = create_example_vehicles()
-    #
+    from_cities = set()
+    for city_id in [1036533631, 1036142029, 1458988644]:
+        from_cities.add(get_city_by_id(city_id))
+
+    #we create some vehicles
+    vehicles = create_example_vehicles()
+
     # to_cities = set(from_cities)
     # for from_city in from_cities:
     #     to_cities -= {from_city}
@@ -94,8 +98,15 @@ if __name__ == "__main__":
 
     mumbai = get_city_by_id(1356226629)
     nyc = get_city_by_id(1840034016)
-    ttt = TeleportingTarteTrolley(1, 5000)
+    auck = get_city_by_id(1554435911)
+    paris = get_city_by_id(1250015082)
+    ttt = TeleportingTarteTrolley(1, 50)
+    # # try:
     shortest_path = find_shortest_path(ttt, mumbai, nyc)
-    print(f"\t{ttt.compute_itinerary_time(shortest_path)} hours with {ttt} with path {shortest_path}.")
-    print(type(shortest_path))
-    print(shortest_path.cities)
+    print(shortest_path)
+    # # except networkx.exception.NetworkXNoPath:
+    # #     print("no path!!")
+    # # else:
+    # print(f"\t{ttt.compute_itinerary_time(shortest_path)} hours with {ttt} with path {shortest_path}.")
+    # #     print(type(shortest_path))
+    # #     print(shortest_path.cities)
