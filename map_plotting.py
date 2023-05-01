@@ -53,7 +53,7 @@ def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, col
     m.drawcoastlines(color='k', linewidth=0.5)
     m.fillcontinents(color='#c0c0c0')
 
-    cities = city_list
+    cities = itinerary.cities
     for i in range(len(cities) - 1):
         lat1, lon1 = cities[i].coordinates
         lat2, lon2 = cities[i+1].coordinates
