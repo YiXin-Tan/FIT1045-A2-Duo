@@ -26,6 +26,7 @@ def create_cities_countries_from_csv(path_to_csv: str) -> None:
             lng = float(row['lng'])
             city_type = row['capital']
             population = row['population']
+            # TODO: use try/except
             if population:
                 population = int(population)  # population field is not empty
             else:
