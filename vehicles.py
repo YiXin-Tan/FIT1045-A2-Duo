@@ -41,9 +41,9 @@ class Vehicle(ABC):
                  or math.inf if the travel is not possible.
         """
         total_duration = 0
-        for city_idx in range(len(itinerary.itinerary_list) - 1):
-            city1 = itinerary.itinerary_list[city_idx]
-            city2 = itinerary.itinerary_list[city_idx + 1]
+        for city_idx in range(len(itinerary.cities) - 1):
+            city1 = itinerary.cities[city_idx]
+            city2 = itinerary.cities[city_idx + 1]
             intercity_travel_duration = self.compute_travel_time(city1, city2)
             if intercity_travel_duration == math.inf:
                 return math.inf

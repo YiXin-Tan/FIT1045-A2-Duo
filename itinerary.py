@@ -21,7 +21,7 @@ class Itinerary():
         :param cities: a sequence of cities, possibly empty.
         :return: None
         """
-        self.itinerary_list = [city for city in cities]
+        self.cities = [city for city in cities]
 
     def total_distance(self) -> int:
         """
@@ -30,9 +30,9 @@ class Itinerary():
         :return: the total distance.
         """
         distance_sum = 0
-        for city_idx in range(len(self.itinerary_list) - 1):
-            city1 = self.itinerary_list[city_idx]
-            city2 = self.itinerary_list[city_idx + 1]
+        for city_idx in range(len(self.cities) - 1):
+            city1 = self.cities[city_idx]
+            city2 = self.cities[city_idx + 1]
             distance_sum += city1.distance(city2)
         return distance_sum
 
@@ -42,7 +42,7 @@ class Itinerary():
         :param city: the city to append
         :return: None.
         """
-        self.itinerary_list.append(city)
+        self.cities.append(city)
 
     def min_distance_insert_city(self, city: City) -> None:
         """
@@ -53,10 +53,10 @@ class Itinerary():
         """
         min_dist = None
         min_city_idx = 0  # initialise min_city_idx (assume min index occurs when city is inserted at index 0)
-        for city_idx in range(len(self.itinerary_list)+1):
-            cloned_itinerary_list = self.itinerary_list[:]  # create a copy
-            # print(self.itinerary_list is cloned_itinerary_list) >>> False
-            # print(self.itinerary_list[0] is cloned_itinerary_list[0]) >>> True
+        for city_idx in range(len(self.cities) + 1):
+            cloned_itinerary_list = self.cities[:]  # create a copy
+            # print(self.cities is cloned_itinerary_list) >>> False
+            # print(self.cities[0] is cloned_itinerary_list[0]) >>> True
             cloned_itinerary_list.insert(city_idx, city)  # place city in cloned list
             dist = Itinerary(cloned_itinerary_list).total_distance() # creates a cloned instance, then get distance using it's instance method
 
@@ -67,7 +67,7 @@ class Itinerary():
                 min_dist = dist
                 min_city_idx = city_idx
 
-        self.itinerary_list.insert(min_city_idx, city)  # place city in actual list
+        self.cities.insert(min_city_idx, city)  # place city in actual list
 
 
     def __str__(self) -> str:
@@ -77,7 +77,7 @@ class Itinerary():
 
         :return: a string representing the itinerary.
         """
-        city_names = [city.name for city in self.itinerary_list]
+        city_names = [city.name for city in self.cities]
         city_sequence = ' -> '.join(city_names)
         total_dist = round(self.total_distance())
         return f'{city_sequence} ({total_dist} km)'
