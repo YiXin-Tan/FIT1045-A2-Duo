@@ -25,9 +25,10 @@ def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, col
     
     # Bounding box
     #min_lat, max_lat, min_lon, max_lon = 5,5,5,5
+    cities = itinerary.cities
 
     min_lat, max_lat, min_lon, max_lon = float('inf'), -float('inf'), float('inf'), -float('inf')
-    for city in city_list:
+    for city in cities:
         lat, lon = city.coordinates
         if lat < min_lat:
             min_lat = lat
@@ -53,13 +54,13 @@ def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, col
     m.drawcoastlines(color='k', linewidth=0.5)
     m.fillcontinents(color='#c0c0c0')
 
-    cities = itinerary.cities
+
     for i in range(len(cities) - 1):
         lat1, lon1 = cities[i].coordinates
         lat2, lon2 = cities[i+1].coordinates
         m.drawgreatcircle(lon1, lat1, lon2, lat2, linewidth=line_width, color=colour)
 
-    filename = f"map_{'_'.join(c.name for c in city_list)}.png".replace(" ", "_")
+    filename = f"map_{'_'.join(c.name for c in cities)}.png".replace(" ", "_")
     plt.savefig(filename, dpi=200)
     print(f"Map saved to {filename}")
     plt.show()
