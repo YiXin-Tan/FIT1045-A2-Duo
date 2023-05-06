@@ -37,22 +37,21 @@ def validate_input(prompt: str, valid_instances: list):  # -> Vehicle|Country|Ci
     :param valid_instances: A list of values to accept. Contains all vehicle, country or city
     :return: validated instance within the given valid_instances list
     """
+    # shorten the displayed option label
     if isinstance(valid_instances[0], City):
-        # TODO: delete
-        # For ZQ,
-        # if valid_instances are all city_instance, it will print out melbourne (1237), which is not pretty
-        # valid_instances = [melb_obj,         kl_obj,    baoding_obj]
-        # original __str__= [melbourne (1237), kl (4567), baoding (234544)]
-        # thus we shorten it by getting city_instance.name
-        # original.name   = [melbourne,        kl,        baoding]
-        valid_names = [city.name for city in valid_instances]  # shorten __str__ of city instance
+        # default printing of City instance yields it name and id number e.g. "Melbourne (1036533631)"
+        # by printing City instance.name, we can shorten it to "Melbourne"
+        option_labels = [city.name for city in valid_instances]  # shorten __str__ of each city instance
     else:
-        valid_names = valid_instances  # retain __str__ of vehicle and country instance
+        # default printing of Country is concise e.g. "Australia"
+        # default printing of Vehicle is concise e.e. "CrappyCrepeCar (200 km/h)"
+        # no need to modify
+        option_labels = valid_instances  # retain __str__ of each vehicle or country instance
 
     # allow users to only input whole numbers
     valid_user_options = [str(i) for i in range(0, len(valid_instances))]
     for i in range(0, len(valid_instances)):
-        prompt += f'\n {i}. {valid_names[i]}'  # create a number/option pair for each record
+        prompt += f'\n {i}. {option_labels[i]}'  # create a number/label pair for each option
     prompt += f'\nPlease enter a number [0-{len(valid_instances) - 1}]:'
 
     print(HEADER)
@@ -80,7 +79,6 @@ def create_vehicles() -> [Vehicle]:
 
     :return: The list of vehicle instances
     """
-
     ccc = CrappyCrepeCar(200)
     ddd = DiplomacyDonutDinghy(100, 500)
     ttt = TeleportingTarteTrolley(3, 2000)
@@ -108,18 +106,20 @@ def select_origin_and_destination_cities() -> (City, City):
     """
     create_cities_countries_from_csv("worldcities_truncated.csv")
     countries = list(Country.name_to_countries.values())
-    countries.sort(key=lambda x: x.name)  # sort countries in alphabetical order
+    countries.sort(key=lambda x: x.name)  # sort countries (key is nested in the instance variable "name") by alphabetical order
 
+    # select originating country, then origin city
     origin_country = validate_input('Which country is the ORIGIN city in?', countries)
     origin_city = validate_input('Which is the ORIGIN city?', origin_country.cities)
 
+    # select destination country, then destination city
     dest_country = validate_input('Which country is the DESTINATION city in?', countries)
     dest_city = None  # initialise
 
     # while the destination city instance match that of the origin, or if the destination has yet exist
     while (dest_city == origin_city) or (dest_city == None):
         if dest_city:
-            # there exist a previous input, which is invalid
+            # there exist a previous input, which is invalid; asks for input again
             print('==========================================================================\n'
                   'Destination city matches the origin city, please input again\n'
                   '==========================================================================')
@@ -165,12 +165,13 @@ def main():
     clear_screen()
     display_vehicle_and_cities(vehicle, origin_city, dest_city)
     if itinerary:
+        # path is found via the given vehicle
         print(itinerary)
         plot_itinerary(itinerary=itinerary)
     else:
+        # no path found via the given vehicle
         print('No path found')
 
 
 if __name__ == '__main__':
-    # TODO: add docstrings
     main()
