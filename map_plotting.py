@@ -10,42 +10,22 @@ import matplotlib.pyplot as plt
 from itinerary import Itinerary
 from city import City
 
+
 def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, colour='b') -> None:
     """
     Plots an itinerary on a map and writes it to a file.
     Ensures a size of at least 50 degrees in each direction.
     Ensures the cities are not on the edge of the map by padding by 5 degrees.
-    The name of the file is map_city1_city2_city3_..._cityX.png.
+    The name of the file is map_city1_city2city3..._cityX.png.
 
     :param itinerary: The itinerary to plot.
     :param projection: The map projection to use.
     :param line_width: The width of the line to draw.
     :param colour: The colour of the line to draw.
     """
-    
+
     # Bounding box
-    #min_lat, max_lat, min_lon, max_lon = 5,5,5,5
-    cities = itinerary.cities
-
-    min_lat, max_lat, min_lon, max_lon = float('inf'), -float('inf'), float('inf'), -float('inf')
-    for city in cities:
-        lat, lon = city.coordinates
-        if lat < min_lat:
-            min_lat = lat
-        if lat > max_lat:
-            max_lat = lat
-        if lon < min_lon:
-            min_lon = lon
-        if lon > max_lon:
-            max_lon = lon
-
-    map_size = max(max_lat - min_lat, max_lon - min_lon, 50)
-
-    padding = 5
-    min_lat = min_lat - padding if min_lat > -90 + map_size / 2 else -90 + map_size / 2
-    max_lat = max_lat + padding if max_lat < 90 - map_size / 2 else 90 - map_size / 2
-    min_lon = min_lon - padding if min_lon > -180 + map_size / 2 else -180 + map_size / 2
-    max_lon = max_lon + padding if max_lon < 180 - map_size / 2 else 180 - map_size / 2
+    min_lat, max_lat, min_lon, max_lon = 5,5,5,5
 
     # Setting up the map
     m = Basemap(projection=projection, lat_0=0,lon_0=0,resolution="l",
@@ -54,13 +34,13 @@ def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, col
     m.drawcoastlines(color='k', linewidth=0.5)
     m.fillcontinents(color='#c0c0c0')
 
-
+    cities = itinerary.cities
     for i in range(len(cities) - 1):
         lat1, lon1 = cities[i].coordinates
         lat2, lon2 = cities[i+1].coordinates
         m.drawgreatcircle(lon1, lat1, lon2, lat2, linewidth=line_width, color=colour)
 
-    filename = f"map_{'_'.join(c.name for c in cities)}.png".replace(" ", "_")
+    filename = f"map{'_'.join(c.name for c in cities)}.png".replace(" ", "")
     plt.savefig(filename, dpi=200)
     print(f"Map saved to {filename}")
     plt.show()
