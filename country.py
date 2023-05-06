@@ -35,7 +35,7 @@ class Country():
         :param city: The city to add to this country
         :return: None
         """
-        self.cities.append(city)  # populate this country's cities list with this city
+        self.cities.append(city)  # populate this Country's cities list with this City
 
     def get_cities(self, city_type: list[str] = None) -> list[City]:
         """
@@ -57,6 +57,7 @@ class Country():
                     filtered_cities.append(city)
             return filtered_cities
         else:
+            # if the city_type list is not specified
             return self.cities
 
     def print_cities(self) -> None:
@@ -70,7 +71,7 @@ class Country():
         table_headers.insert(0, "Order")  # ["Order", "Name", "Coordinates", "City type", "Population", "City ID"]
 
         cities = [city.get_table_data() for city in self.cities]  # populate cities list with each city's data
-        cities.sort(key=lambda city_list: int(city_list[3]), reverse=True)  # sorts population (in nested list) by descending order
+        cities.sort(key=lambda city_list: int(city_list[3]), reverse=True)  # sorts population (in nested list) by descending numerical order
 
         for i in range(len(cities)):
             cities[i].insert(0, i)  # insert order number at start of each nested list

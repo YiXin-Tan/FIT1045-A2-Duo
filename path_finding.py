@@ -27,7 +27,7 @@ def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itin
     if isinstance(vehicle, CrappyCrepeCar):
         return Itinerary([from_city, to_city])  # most direct route given CCC, since it has a fixed travel speed
     else:
-        g = networkx.Graph()
+        g = networkx.Graph()  # create an empty graph
         cities_id = list(City.id_to_cities.keys())
         cities_len = len(cities_id)
 
@@ -35,14 +35,14 @@ def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itin
         for city in cities_id:
             g.add_node(city)
 
-        # attempt to create edges between all city nodes, goes through all combinations
+        # attempt to create edges between all city nodes, goes through all permutations
         for i in range(cities_len - 1):
             city1 = get_city_by_id(cities_id[i])
-            for j in range(i+1, cities_len):
+            for j in range(i+1, cities_len):  # skips existing permutation by using i+1
                 city2 = get_city_by_id(cities_id[j])
                 travel_time = vehicle.compute_travel_time(city1, city2)
                 if travel_time != math.inf:
-                    # if a valid path is found, create an edge connecting these city's node
+                    # if a valid path is found, create an edge connecting these Cities' nodes
                     g.add_edge(city1.city_id, city2.city_id, weight=travel_time)
 
         try:

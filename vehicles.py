@@ -41,13 +41,15 @@ class Vehicle(ABC):
                  or math.inf if the travel is not possible.
         """
         total_duration = 0
-        for city_idx in range(len(itinerary.cities) - 1):
+        for city_idx in range(len(itinerary.cities) - 1):  # iterate until the second-last City, since the last City will be paired with the second-last City
             city1 = itinerary.cities[city_idx]
             city2 = itinerary.cities[city_idx + 1]
             intercity_travel_duration = self.compute_travel_time(city1, city2)
             if intercity_travel_duration == math.inf:
+                # terminate function if travel isn't possible via this vehicle
                 return math.inf
             else:
+                # sum up duration sequentially between pairs of Cities
                 total_duration += intercity_travel_duration
         return total_duration
 
@@ -59,6 +61,7 @@ class Vehicle(ABC):
         :return: the string representation of the vehicle.
         """
         pass
+
 
 class CrappyCrepeCar(Vehicle):
     """
@@ -97,6 +100,7 @@ class CrappyCrepeCar(Vehicle):
         """
         return f'{self.__class__.__name__} ({self.speed} km/h)'
 
+
 class DiplomacyDonutDinghy(Vehicle):
     """
     A type of vehicle that:
@@ -130,14 +134,14 @@ class DiplomacyDonutDinghy(Vehicle):
         """
         distance = departure.distance(arrival)  # unit: km
 
-        if find_country_of_city(departure) == find_country_of_city(arrival):  # check if in same country
+        if find_country_of_city(departure) == find_country_of_city(arrival):  # check if both Cities are in same country
             time = distance / self.in_country_speed  # unit: hr
             return math.ceil(time)
-        elif departure.city_type == arrival.city_type == "primary":  # check if both cities are "primary"
+        elif departure.city_type == arrival.city_type == "primary":  # check if both Cities are "primary"
             time = distance / self.between_primary_speed  # unit: hr
             return math.ceil(time)
         else:
-            return math.inf  # travel by DDD not possible
+            return math.inf  # travel via DDD not possible
 
     def __str__(self) -> str:
         """
@@ -147,6 +151,7 @@ class DiplomacyDonutDinghy(Vehicle):
         :return: the string representation of the vehicle.
         """
         return f'{self.__class__.__name__} ({self.in_country_speed} km/h | {self.between_primary_speed} km/h)'
+
 
 class TeleportingTarteTrolley(Vehicle):
     """
@@ -178,8 +183,8 @@ class TeleportingTarteTrolley(Vehicle):
         """
         distance = departure.distance(arrival)
         if distance < self.max_distance:
-            return math.ceil(self.travel_time)
-        return math.inf
+            return math.ceil(self.travel_time)  # distance is within given max distance
+        return math.inf  # travel not possible by TTT, as distance is outside range of max distance
 
     def __str__(self) -> str:
         """
@@ -197,6 +202,7 @@ def create_example_vehicles() -> list[Vehicle]:
     :return: a list of 3 vehicles.
     """
     return [CrappyCrepeCar(200), DiplomacyDonutDinghy(100, 500), TeleportingTarteTrolley(3, 2000)]
+
 
 if __name__ == "__main__":
     #we create some example cities
@@ -216,7 +222,6 @@ if __name__ == "__main__":
             print(f"{from_city} to {to_city}:")
             for vehicle in vehicles:
                 print(f"\t{vehicle.compute_travel_time(from_city, to_city)} hours with {vehicle}.")
-    # TODO: 3 test pairs of cities instead of 6?
 
     # test codes
     # ccc = vehicles[0]

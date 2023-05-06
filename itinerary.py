@@ -22,7 +22,7 @@ class Itinerary():
         :param cities: a sequence of cities, possibly empty.
         :return: None
         """
-        self.cities = [city for city in cities]
+        self.cities = [city for city in cities]  # initialise by populating City instances into this instance variable
 
     def total_distance(self) -> int:
         """
@@ -31,10 +31,10 @@ class Itinerary():
         :return: the total distance.
         """
         distance_sum = 0
-        for city_idx in range(len(self.cities) - 1):
+        for city_idx in range(len(self.cities) - 1):  # iterate until the second-last City, since the last City will be paired with the second-last City
             city1 = self.cities[city_idx]
             city2 = self.cities[city_idx + 1]
-            distance_sum += city1.distance(city2)
+            distance_sum += city1.distance(city2)  # sum up distance sequentially between pairs of Cities
         return distance_sum
 
     def append_city(self, city: City) -> None:
@@ -55,16 +55,18 @@ class Itinerary():
         min_dist = None
         min_city_idx = 0  # initialise min_city_idx (assume min index occurs when city is inserted at index 0)
         for city_idx in range(len(self.cities) + 1):
-            cloned_itinerary_list = self.cities[:]  # create a copy
+            cloned_itinerary_list = self.cities[:]  # create a shallow copy
             # self.cities is cloned_itinerary_list >>> False
             # self.cities[0] is cloned_itinerary_list[0] >>> True
             cloned_itinerary_list.insert(city_idx, city)  # place city in cloned list
             dist = Itinerary(cloned_itinerary_list).total_distance()  # creates a cloned instance, then get distance using it's instance method
 
             if not min_dist:
-                min_dist = dist  # initialise min_dist (assume min distance occurs when city is inserted at index 0)
+                # initialise min_dist (assume min distance occurs when city is inserted at index 0)
+                min_dist = dist
             elif dist < min_dist:
-                min_dist = dist  # renew min_dist and min_city_idx
+                # renew min_dist and min_city_idx
+                min_dist = dist
                 min_city_idx = city_idx
 
         self.cities.insert(min_city_idx, city)  # place city in actual list

@@ -46,7 +46,7 @@ class City():
         # We use a list because there may be multiple cities with the same name.
         # {city_name: [<city1_id>, <city2_di>]}
         if self.name in City.name_to_cities:
-            City.name_to_cities[self.name].append(self)
+            City.name_to_cities[self.name].append(self)  # append to existing key
         else:
             City.name_to_cities[self.name] = [self]  # create new key/value pair
 

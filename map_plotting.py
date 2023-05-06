@@ -35,11 +35,12 @@ def plot_itinerary(itinerary: Itinerary, projection='robin', line_width=2, colou
     m.fillcontinents(color='#c0c0c0')
 
     cities = itinerary.cities
-    for i in range(len(cities) - 1):
+    for i in range(len(cities) - 1): # iterate until the second-last City, since the last City will be paired with the second-last City
         lat1, lon1 = cities[i].coordinates
         lat2, lon2 = cities[i + 1].coordinates
-        m.drawgreatcircle(lon1, lat1, lon2, lat2, linewidth=line_width, color=colour)
+        m.drawgreatcircle(lon1, lat1, lon2, lat2, linewidth=line_width, color=colour)  # draw a connection between a pair of Cities
 
+    # save and then display the image file
     filename = f"map_{'_'.join(c.name for c in cities)}.png".replace(" ", "")
     plt.savefig(filename, dpi=200)
     print(f"Map saved to {filename}")
