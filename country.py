@@ -18,7 +18,6 @@ class Country():
     def __init__(self, name: str, iso3: str) -> None:
         """
         Creates an instance with a country name and a country ISO code with 3 characters.
-        #TODO: rename docstring parameters?
         :param country_name: The name of the country
         :param country_iso3: The unique 3-letter identifier of this country
 	    :return: None
@@ -51,6 +50,7 @@ class Country():
         :return: a list of cities in this country that have the specified city types.
         """
         if city_type:
+            # if the city_type list is specified
             filtered_cities = []
             for city in self.cities:  # for each city in the specified country
                 if city.city_type in city_type:  # check whether the city_type matches the filter criteria
@@ -116,6 +116,7 @@ def find_country_of_city(city: City) -> Country:
     """
     for country in Country.name_to_countries.values():
         if city in country.cities:
+            # City instance exist in this Country's cities list
             return country
 
 

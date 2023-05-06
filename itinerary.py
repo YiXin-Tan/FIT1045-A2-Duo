@@ -9,6 +9,7 @@ import math
 from city import City, create_example_cities, get_cities_by_name
 import copy
 
+
 class Itinerary():
     """
     A sequence of cities.
@@ -55,20 +56,18 @@ class Itinerary():
         min_city_idx = 0  # initialise min_city_idx (assume min index occurs when city is inserted at index 0)
         for city_idx in range(len(self.cities) + 1):
             cloned_itinerary_list = self.cities[:]  # create a copy
-            # print(self.cities is cloned_itinerary_list) >>> False
-            # print(self.cities[0] is cloned_itinerary_list[0]) >>> True
+            # self.cities is cloned_itinerary_list >>> False
+            # self.cities[0] is cloned_itinerary_list[0] >>> True
             cloned_itinerary_list.insert(city_idx, city)  # place city in cloned list
-            dist = Itinerary(cloned_itinerary_list).total_distance() # creates a cloned instance, then get distance using it's instance method
+            dist = Itinerary(cloned_itinerary_list).total_distance()  # creates a cloned instance, then get distance using it's instance method
 
-            # TODO: ok to initialise like this?
             if not min_dist:
                 min_dist = dist  # initialise min_dist (assume min distance occurs when city is inserted at index 0)
             elif dist < min_dist:
-                min_dist = dist
+                min_dist = dist  # renew min_dist and min_city_idx
                 min_city_idx = city_idx
 
         self.cities.insert(min_city_idx, city)  # place city in actual list
-
 
     def __str__(self) -> str:
         """

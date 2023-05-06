@@ -5,18 +5,18 @@ It allows plotting an Itinerary as the picture of a map.
 
 @file map_plotting.py
 """
-from mpl_toolkits.basemap import Basemap #have to do 'pip install basemap'
+from mpl_toolkits.basemap import Basemap  # have to do 'pip install basemap'
 import matplotlib.pyplot as plt
 from itinerary import Itinerary
 from city import City
 
 
-def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, colour='b') -> None:
+def plot_itinerary(itinerary: Itinerary, projection='robin', line_width=2, colour='b') -> None:
     """
     Plots an itinerary on a map and writes it to a file.
     Ensures a size of at least 50 degrees in each direction.
     Ensures the cities are not on the edge of the map by padding by 5 degrees.
-    The name of the file is map_city1_city2city3..._cityX.png.
+    The name of the file is map_city1_city2_city3_..._cityX.png.
 
     :param itinerary: The itinerary to plot.
     :param projection: The map projection to use.
@@ -25,10 +25,10 @@ def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, col
     """
 
     # Bounding box
-    min_lat, max_lat, min_lon, max_lon = 5,5,5,5
+    min_lat, max_lat, min_lon, max_lon = 5, 5, 5, 5
 
     # Setting up the map
-    m = Basemap(projection=projection, lat_0=0,lon_0=0,resolution="l",
+    m = Basemap(projection=projection, lat_0=0, lon_0=0, resolution="l",
                 llcrnrlon=min_lon, llcrnrlat=min_lat, urcrnrlon=max_lon, urcrnrlat=max_lat)
 
     m.drawcoastlines(color='k', linewidth=0.5)
@@ -37,13 +37,14 @@ def plot_itinerary(itinerary: Itinerary, projection = 'robin', line_width=2, col
     cities = itinerary.cities
     for i in range(len(cities) - 1):
         lat1, lon1 = cities[i].coordinates
-        lat2, lon2 = cities[i+1].coordinates
+        lat2, lon2 = cities[i + 1].coordinates
         m.drawgreatcircle(lon1, lat1, lon2, lat2, linewidth=line_width, color=colour)
 
-    filename = f"map{'_'.join(c.name for c in cities)}.png".replace(" ", "")
+    filename = f"map_{'_'.join(c.name for c in cities)}.png".replace(" ", "")
     plt.savefig(filename, dpi=200)
     print(f"Map saved to {filename}")
     plt.show()
+
 
 if __name__ == "__main__":
     # create some cities

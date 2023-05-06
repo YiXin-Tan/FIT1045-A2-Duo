@@ -13,6 +13,7 @@ from itinerary import Itinerary
 from vehicles import Vehicle, create_example_vehicles, CrappyCrepeCar, DiplomacyDonutDinghy, TeleportingTarteTrolley
 from csv_parsing import create_cities_countries_from_csv
 
+
 def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itinerary:  # Itinerary | None
     """
     Returns a shortest path between two cities for a given vehicle as an Itinerary,
@@ -50,7 +51,7 @@ def find_shortest_path(vehicle: Vehicle, from_city: City, to_city: City) -> Itin
             path_sequence_obj = [get_city_by_id(city_id) for city_id in path_sequence_ids]  # populate with City instances
         except networkx.exception.NetworkXNoPath:
             # handle NetworkXNoPath error, as no path is found
-            return
+            return  # terminate function
         else:
             # no NetworkXNoPath error
             return Itinerary(path_sequence_obj)

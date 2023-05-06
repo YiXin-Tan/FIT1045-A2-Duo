@@ -42,7 +42,7 @@ class City():
         # {id: <obj_city>}
         City.id_to_cities[self.city_id] = self
 
-        # associates city names to a list of instances of City.
+        # associates city names to a list of it's respective instances
         # We use a list because there may be multiple cities with the same name.
         # {city_name: [<city1_id>, <city2_di>]}
         if self.name in City.name_to_cities:

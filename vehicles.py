@@ -137,7 +137,7 @@ class DiplomacyDonutDinghy(Vehicle):
             time = distance / self.between_primary_speed  # unit: hr
             return math.ceil(time)
         else:
-            return math.inf
+            return math.inf  # travel by DDD not possible
 
     def __str__(self) -> str:
         """
